@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For Zee 🎂</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Dancing+Script:wght@600&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root { --primary-pink: #ff3399; --deep-pink: #ff0077; --bg-pink: #ffe6f0; --letter-bg: #fffaf0; }
+        body { background-color: var(--bg-pink); text-align: center; font-family: 'Quicksand', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px; box-sizing: border-box; overflow-x: hidden; }
+        
+        .heart { position: fixed; color: rgba(255, 51, 153, 0.3); font-size: 20px; animation: float 4s linear infinite; z-index: -1; bottom: -50px; }
+        @keyframes float { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; } }
+        
+        h1 { font-family: 'Pacifico', cursive; color: var(--deep-pink); font-size: 2.5rem; margin: 15px 0; text-shadow: 2px 2px 0 #fff; }
+        
+        .cake-container { position: relative; width: 200px; height: 150px; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; margin-bottom: 25px; cursor: pointer; }
+        .layer-bottom { width: 180px; height: 50px; background: #ff99cc; border-radius: 10px; border-bottom: 5px solid #e68aaf; z-index: 1; }
+        .layer-top { width: 140px; height: 40px; background: #ff66b2; border-radius: 10px; border-bottom: 5px solid #d45594; margin-bottom: -5px; z-index: 2; }
+        .candle { width: 10px; height: 40px; background: repeating-linear-gradient(45deg, #fff, #fff 5px, #ff99cc 5px, #ff99cc 10px); border-radius: 2px; z-index: 3; }
+        .flame { width: 16px; height: 24px; background: radial-gradient(circle at bottom, #fff700, #ff8800, #ff4400); border-radius: 50% 50% 20% 20%; margin-bottom: 5px; animation: flicker 0.1s infinite alternate; filter: blur(1px); box-shadow: 0 0 15px rgba(255, 165, 0, 0.6); z-index: 4; }
+        
+        #letter-wrapper { display: none; max-width: 500px; width: 90%; background: var(--letter-bg); padding: 25px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: left; line-height: 1.6; animation: slideUp 0.8s ease-out; margin-top: 15px; border: 2px solid #ffcce0; box-sizing: border-box; }
+        .letter-text { font-family: 'Dancing Script', cursive; font-size: 1.3rem; white-space: pre-wrap; color: #444; }
+        .letter-header, .letter-footer { font-weight: bold; color: var(--deep-pink); font-size: 1.5rem; display: block; margin-bottom: 10px; }
+        
+        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .btn { padding: 18px 36px; font-size: 1.2rem; font-weight: bold; border: none; border-radius: 50px; cursor: pointer; background: linear-gradient(45deg, var(--primary-pink), var(--deep-pink)); color: white; box-shadow: 0 6px 20px rgba(255, 51, 153, 0.4); transition: 0.3s; z-index: 10; }
+    </style>
+</head>
+<body>
+
+    <h1>🎂 For Zee 🎂</h1>
+
+    <div class="cake-container" id="cake">
+        <div id="flame" class="flame"></div>
+        <div class="candle"></div>
+        <div class="layer-top"></div>
+        <div class="layer-bottom"></div>
+    </div>
+    
+    <button id="mainBtn" class="btn" onclick="startSurprise()">Open Your Surprise 💖</button>
+
+    <div id="letter-wrapper">
+        <span class="letter-header">Dear Zee,</span>
+        <div class="letter-text">Happy Birthday love, this might feel like I made this just because were not okay but this is how I genuinely feel and what I want to happen. All of this might not capture your heart very well but I know damn well that you're gonna read this letter because you're curious about how i feel about you too. As much as I want to write you a letter, I wanna see you smile again.
+
+I’ve been looking forward 'till today, the very day my love was born. Looking back thinking about how we spent a lot of time together it really feels like forever. No matter how long it takes I will always be by your side, I won't let all those years go to waste. I want you to know that I'll be there for you at all the birthdays you'll ever have. I'm sorry for all the disappointments I've done before your day. I'm sorry to make you feel alone before your birthday I hope you'll feel better soon. I wanna make your birthday the day you won't ever forget. Why is it always like this? Whenever we hold an event it always starts with us arguing about something and then we just hangout like nothing happened. Still, I'm hoping that the both of us won't bare any animosity or contempt with each other.
+
+Even tho this day started bad then maybe we could make it better like we always do. We always figure things out and it always come out good and smooth and romantic at the end of the day. It's funny that I don't also even know how we always end up okay after being in fight with each other. I assure you that there is only one woman in my heart and it's you and I promise that I'll do my best to assure you and tell you every detail from now on. I Iove you so much love, good night and sleep well.</div>
+        <span class="letter-footer">Your beloved Dee</span>
+    </div>
+
+    <script>
+        let audioCtx;
+        let isSuccess = false;
+
+        // Clean & Happy repeating melody
+        function playBdaySong() {
+            const melody = [392, 392, 440, 392, 523, 493, 392, 392, 440, 392, 587, 523];
+            const timing = [0.4, 0.2, 0.6, 0.6, 0.6, 1.2, 0.4, 0.2, 0.6, 0.6, 0.6, 1.2];
+            
+            let time = audioCtx.currentTime;
+            melody.forEach((freq, i) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, time);
+                gain.gain.setValueAtTime(0, time);
+                gain.gain.linearRampToValueAtTime(0.1, time + 0.05);
+                gain.gain.exponentialRampToValueAtTime(0.0001, time + timing[i]);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(time);
+                osc.stop(time + timing[i]);
+                time += timing[i];
+            });
+            setTimeout(playBdaySong, 8000); 
+        }
+
+        async function startSurprise() {
+            const btn = document.getElementById('mainBtn');
+            
+            // Audio Context initialization on click (fixes mobile errors)
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') await audioCtx.resume();
+            
+            playBdaySong();
+
+            btn.innerText = "Blow Out the Candle! 🌬️";
+            btn.onclick = triggerSuccess; // Switched to tap-to-blow for 100% success rate
+
+            // Try to add Mic-Blow as an extra feature, but keep tap as primary
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                const source = audioCtx.createMediaStreamSource(stream);
+                const analyser = audioCtx.createAnalyser();
+                source.connect(analyser);
+                const data = new Uint8Array(analyser.frequencyBinCount);
+                const check = () => {
+                    if (isSuccess) return;
+                    analyser.getByteFrequencyData(data);
+                    let vol = data.reduce((a, b) => a + b) / data.length;
+                    if (vol > 40) triggerSuccess();
+                    else requestAnimationFrame(check);
+                };
+                check();
+            } catch (e) { console.log("Mic disabled, using tap."); }
+        }
+
+        function triggerSuccess() {
+            if(isSuccess) return;
+            isSuccess = true;
+            document.getElementById('flame').style.display = 'none';
+            document.getElementById('mainBtn').style.display = 'none';
+            document.getElementById('letter-wrapper').style.display = 'block';
+            confetti({ particleCount: 200, spread: 70, origin: { y: 0.6 } });
+        }
+
+        setInterval(() => {
+            const h = document.createElement('div');
+            h.className = 'heart'; h.innerHTML = '💖';
+            h.style.left = Math.random() * 100 + 'vw';
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 4000);
+        }, 600);
+    </script>
+</body>
+</html>
